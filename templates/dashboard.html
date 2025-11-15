@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+     
+    <h2>All Posts</h2>
+    <a href="/create-post">+ Create New Post</a> |
+    <a href="/logout">Logout</a>
+    <hr>
+    {{range .}}
+        <h3>{{.Title}}</h3>
+        <p>{{.Content}}</p>
+        <small>By: {{.User.Username}} | {{.CreatedAt}}</small>
+        <hr>
+    {{else}}
+        <p>No posts yet.</p>
+    {{end}}
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>Create Post</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>Create New Post</h2>
+    <form method="POST" action="/submit-post">
+        Title: <input type="text" name="title" required><br><br>
+        Content:<br>
+        <textarea name="content" rows="5" cols="50" required></textarea><br><br>
+        <button type="submit">Publish</button>
+    </form>
+    <br>
+    <a href="/dashboard">Back to Dashboard</a>
+</body>
+</html>
