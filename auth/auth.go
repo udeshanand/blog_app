@@ -3,7 +3,9 @@ package auth
 import (
 	models "blog-app/model"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -47,7 +49,11 @@ func (a *AuthHandler) UserRegistration(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "User already exists", http.StatusConflict)
 		return
 	}
-
+	var pass = input.Password
+	if err := PasswordValidation(pass); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 	// Hash password
 	hashed, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -113,4 +119,30 @@ func (a *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	session.Options.MaxAge = -1 // delete session
 	SaveSession(w, r, session)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Logged out"})
+}
+
+// //
+func PasswordValidation(p string) error {
+	if len(p) < 8 {
+		return fmt.Errorf("password must be at least 8 characters long")
+	}
+	hasUpper := regexp.MustCompile(`[A-Z]`).MatchString(p)
+	hasLower := regexp.MustCompile(`[a-z]`).MatchString(p)
+	hasDigit := regexp.MustCompile(`[0-9]`).MatchString(p)
+	hasSpecial := regexp.MustCompile(`[!@#~$%^&*()+|_.,<>?/{}\-]`).MatchString(p)
+
+	if !hasUpper {
+		return fmt.Errorf("password must contain at least one uppercase letter")
+	}
+	if !hasLower {
+		return fmt.Errorf("password must contain at least one lowercase letter")
+	}
+	if !hasDigit {
+		return fmt.Errorf("password must contain at least one digit")
+	}
+	if !hasSpecial {
+		return fmt.Errorf("password must contain at least one special character")
+	}
+
+	return nil
 }

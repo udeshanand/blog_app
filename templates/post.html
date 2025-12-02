@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ .Title }}</title>
+    <style>
+        body { font-family: Arial; background:#f4f4f4; text-align:center; padding-top:50px; }
+        .container { background:#fff; padding:40px; border-radius:10px; display:inline-block; max-width:600px; text-align:left; }
+        a { text-decoration:none; color:#007BFF; }
+        a:hover { text-decoration:underline; }
+        .content { white-space: pre-wrap; } /* preserves line breaks */
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>{{ .Title }}</h1>
+    <p>
+        By {{ .User.Username }} — {{ printf "%s" (.CreatedAt.Format "02 Jan 2006") }}
+    </p>
+    <hr>
+    <div class="content">
+        {{ .Content | safeHTML }}
+    </div>
+    <br>
+    <a href="/dashboard">← Back</a>
+</div>
+</body>
+</html>

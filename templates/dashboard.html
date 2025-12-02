@@ -6,38 +6,103 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            text-align: center;
-            padding-top: 50px;
+            padding: 0;
+            margin: 0;
         }
-        .container {
+
+       
+        .navbar {
             background: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            display: inline-block;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        a {
+
+        .navbar a {
+            margin-left: 20px;
             text-decoration: none;
             color: #007BFF;
         }
-        a:hover {
-            text-decoration: underline;
+
+       
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
+
+        .profile-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+       
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        hr { margin: 20px 0; }
     </style>
 </head>
+
 <body>
-     
-    <h2>All Posts</h2>
-    <a href="/create-post">+ Create New Post</a> |
-    <a href="/logout">Logout</a>
-    <hr>
-    {{range .}}
-        <h3>{{.Title}}</h3>
-        <p>{{.Content}}</p>
-        <small>By: {{.User.Username}} | {{.CreatedAt}}</small>
+
+
+<div class="navbar">
+    <div>
+        <h2 style="display:inline;">All Posts</h2>
+        <a href="/create-post">+ Create New Post</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    
+    <div class="profile-section">
+        <img src="image/img.jpeg" class="profile-img" alt="profile">
+
+        <form action="/upload-image" method="POST" enctype="multipart/form-data">
+            <input type="file" name="profile" accept="image/*" required>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+</div>
+
+<!--new-->
+<div class="container">
+    {{ range .Posts }}
+        <h3>
+            <a href="/post?id={{ .ID }}">{{ .Title }}</a>
+        </h3>
+
+        <small>
+            By {{ .User.Username }} | {{ .CreatedAt }}
+        </small>
+        
         <hr>
-    {{else}}
+    {{ else }}
         <p>No posts yet.</p>
-    {{end}}
+    {{ end }}
+    <div style="margin-top:20px; text-align:center;">
+    {{ if .HasPrev }}
+        <a href="/dashboard?page={{ .PrevPage }}&limit={{ .Limit }}" style="margin-right: 10px;">Previous</a>
+    {{ end }}
+
+    <span>Page {{ .Page }} of {{ .LastPage }}</span>
+
+    {{ if .HasNext }}
+        <a href="/dashboard?page={{ .NextPage }}&limit={{ .Limit }}" style="margin-left: 10px;">Next</a>
+    {{ end }}
+</div>
+
+</div>
+
+
 </body>
 </html>
